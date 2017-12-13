@@ -8,7 +8,7 @@ function writeIDF(data)
 name='test';
 
 %% Writing data in text format
-fileID=fopen(sprintf('%s.idf',name),'a');
+fileID=fopen(sprintf('%s.idf',name),'w');
 for i=1:length(data)
     fprintf(fileID,sprintf('\n%s,\n',data(i).class));
     for j=1:length(data(i).fields)-1

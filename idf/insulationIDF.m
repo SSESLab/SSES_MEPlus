@@ -5,7 +5,7 @@ mat.class='Material:NoMass';
 mat.fields(1)={'Thermal Insulation'};
 mat.fields(2)={'MediumRough'};
 mat.fields(3)={25.000};
-mat.fields(4)={0.9000};
+mat.fields(4)={0.9000}
 mat.fields(5)={0.7000};
 mat.fields(6)={0.8000};
 
