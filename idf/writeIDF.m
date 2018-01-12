@@ -5,7 +5,7 @@ function writeIDF(data)
 
 %Input: data is modified IDF information
 
-name='test';
+name='sms_off';
 
 %% Writing data in text format
 fileID=fopen(sprintf('%s.idf',name),'w');
