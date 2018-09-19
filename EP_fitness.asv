@@ -36,7 +36,7 @@ if system('energyplus -w SD_TMY3.epw Sml_test.idf')==0
     % Energy and Emission Calculation ( CO2 for now) for Med Office
     m=csvread('eplusout.csv',1,1); % read the electricity use from E+ output
     reg=6; % this value is determined by eGrid region of the building location. Look at the emission data for more details
-    purch_sml=(sum(reshape(m(:,21),6,24)))'.*J_h_to_MWh-PV_SD_01_09_MWh_Sml;
+    purch_sml=(sum(reshape(m(:,21),6,24)))'.*J_h_to_MWh-PV_SD_07_17_MWh_Sml;
     Excess_sml=-purch_sml;
     purch_sml(purch_sml<0)=0;
     Excess_sml(Excess_sml<0)=0;
@@ -44,7 +44,7 @@ if system('energyplus -w SD_TMY3.epw Sml_test.idf')==0
     Cost_gas_sml=sum((sum(reshape(m(:,22),6,24)))'.*J_h_to_MWh.*MWh_to_mmBtu.*Natural_Gas_Cf.*8.57);%https://www.eia.gov/dnav/ng/NG_PRI_SUM_DCU_SCA_M.htm [Made an average for last 6 months]
 %     Cost_gas_med=sum((sum(reshape(m(:,58),6,24)))'.*J_h_to_MWh.*MWh_to_mmBtu.*10.0023877.*33); %mmbtu is 10.0023877 therms and each therm is 33 dolors in sandiego [https://www.chooseenergy.com/shop/residential/naturalgas/CA/92101/sdge-ca-naturalgas/]
     Emission_elec_sml=sum(Location_CF_EPA(reg).CO2Emission_factor_hourly(Week(2).MonthStart).hour.*purch_sml); %lbs
-    Cost_elec_sml=sum(LMP(:,1).*purch_sml); % LMP values from http://oasis.caiso.com/mrioasis/logon.do
+    Cost_elec_sml=sum(LMP(:,2).*purch_sml); % LMP values from http://oasis.caiso.com/mrioasis/logon.do
     % ashrae 55 discomfort for sml Office
     k=1;
     penalty_sml=0;
@@ -79,7 +79,7 @@ if system('energyplus -w SD_TMY3.epw Med_test.idf')==0
     % Energy and Emission Calculation ( CO2 for now) for Med Office
     m=csvread('eplusout.csv',1,1); % read the electricity use from E+ output
     reg=6; % this value is determined by eGrid region of the building location. Look at the emission data for more details
-    purch_med=(sum(reshape(m(:,57),6,24)))'.*J_h_to_MWh-PV_SD_01_09_MWh_Med;
+    purch_med=(sum(reshape(m(:,57),6,24)))'.*J_h_to_MWh-PV_SD_07_17_MWh_Med;
     Excess_med=-purch_med;
     purch_med(purch_med<0)=0;
     Excess_med(Excess_med<0)=0;
@@ -87,7 +87,7 @@ if system('energyplus -w SD_TMY3.epw Med_test.idf')==0
     Cost_gas_med=sum((sum(reshape(m(:,58),6,24)))'.*J_h_to_MWh.*MWh_to_mmBtu.*Natural_Gas_Cf.*8.57);%https://www.eia.gov/dnav/ng/NG_PRI_SUM_DCU_SCA_M.htm [Made an average for last 6 months]
 %     Cost_gas_med=sum((sum(reshape(m(:,58),6,24)))'.*J_h_to_MWh.*MWh_to_mmBtu.*10.0023877.*33); %mmbtu is 10.0023877 therms and each therm is 33 dolors in sandiego [https://www.chooseenergy.com/shop/residential/naturalgas/CA/92101/sdge-ca-naturalgas/]
     Emission_elec_med=sum(Location_CF_EPA(reg).CO2Emission_factor_hourly(Week(2).MonthStart).hour.*purch_med); %lbs
-    Cost_elec_med=sum(LMP(:,1).*purch_med); % LMP values from http://oasis.caiso.com/mrioasis/logon.do
+    Cost_elec_med=sum(LMP(:,2).*purch_med); % LMP values from http://oasis.caiso.com/mrioasis/logon.do
     % ashrae 55 discomfort for Med Office
     k=1;
     penalty_Med=0;
@@ -127,15 +127,15 @@ if system('energyplus -w SD_TMY3.epw Lrg_test.idf')==0
     % Energy and Emission Calculation ( CO2 for now) for Med Office
     m=csvread('eplusout.csv',1,1); % read the electricity use from E+ output
     reg=6; % this value is determined by eGrid region of the building location. Look at the emission data for more details
-%     Excess_sml=25.*(PV_SD_01_09_MWh_Sml-sml_Elec_07_17.*J_h_to_MWh).*((PV_SD_01_09_MWh_Sml-sml_Elec_07_17.*J_h_to_MWh)>0); %campus
-    purch_Lrg=(sum(reshape(m(:,73),6,24)))'.*J_h_to_MWh-25.*Excess_sml-PV_SD_01_09_MWh_Large-10*Excess_med; %Campus
+%     Excess_sml=25.*(PV_SD_07_17_MWh_Sml-sml_Elec_07_17.*J_h_to_MWh).*((PV_SD_07_17_MWh_Sml-sml_Elec_07_17.*J_h_to_MWh)>0); %campus
+    purch_Lrg=(sum(reshape(m(:,73),6,24)))'.*J_h_to_MWh-25.*Excess_sml-PV_SD_07_17_MWh_Large-10*Excess_med; %Campus
 %     purch_Lrg=(sum(reshape(m(:,73),6,24)))'.*J_h_to_MWh-PV_SD_01_09_MWh_Large;
     purch_Lrg(purch_Lrg<0)=0;
     Emission_gas_Lrg=sum((sum(reshape(m(:,74),6,24)))'.*J_h_to_MWh.*MWh_to_mmBtu.*Natural_Gas_Cf);
     Cost_gas_Lrg=sum((sum(reshape(m(:,74),6,24)))'.*J_h_to_MWh.*MWh_to_mmBtu.*Natural_Gas_Cf.*8.57);%https://www.eia.gov/dnav/ng/NG_PRI_SUM_DCU_SCA_M.htm
     %     Cost_gas_Lrg=sum((sum(reshape(m(:,74),6,24)))'.*J_h_to_MWh.*MWh_to_mmBtu.*10.0023877.*33); %mmbtu is 10.0023877 therms and each therm is 33 dolors in sandiego [https://www.chooseenergy.com/shop/residential/naturalgas/CA/92101/sdge-ca-naturalgas/]
     Emission_elec_Lrg=sum(Location_CF_EPA(reg).CO2Emission_factor_hourly(Week(2).MonthStart).hour.*purch_Lrg); %lbs
-    Cost_elec_Lrg=sum(LMP(:,1).*purch_Lrg);
+    Cost_elec_Lrg=sum(LMP(:,2).*purch_Lrg);
     % ashrae 55 discomfort for Med Office
     k=1;
     penalty_Lrg=0;

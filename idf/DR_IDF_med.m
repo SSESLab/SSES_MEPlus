@@ -1,4 +1,4 @@
-function [data]=DR_IDF_sml(data,Week,T_low,T_high,startT_init,endT_init,timestep)
+function [data]=DR_IDF_lrg(data,Week,T_low,T_high,startT_init,endT_init,timestep)
 if timestep ==1
 startT=strcat(num2str(floor(startT_init)),':00');
 endT=strcat(num2str(floor(endT_init)),':00');
@@ -7,16 +7,16 @@ else
     endT=strcat(num2str(floor(endT_init)),':',num2str(floor((endT_init-floor(endT_init))*timestep)),'0');
 end
 % DR=struct;
-default_weekstart={'OfficeSmall CLGSETP_SCH_NO_OPTIMUM Default'};
-default_weekend={'OfficeSmall CLGSETP_SCH_NO_OPTIMUM Default', 'OfficeSmall CLGSETP_SCH_NO_OPTIMUM Default',...
-    'OfficeSmall CLGSETP_SCH_NO_OPTIMUM Summer Design Day',...
-    'OfficeSmall CLGSETP_SCH_NO_OPTIMUM Winter Design Day','OfficeSmall CLGSETP_SCH_NO_OPTIMUM Default',...
-    'OfficeSmall CLGSETP_SCH_NO_OPTIMUM Default'};
+default_weekstart={'OfficeMedium CLGSETP_SCH_NO_OPTIMUM Default'};
+default_weekend={'OfficeMedium CLGSETP_SCH_NO_OPTIMUM Sat Day', 'OfficeMedium CLGSETP_SCH_NO_OPTIMUM Default',...
+    'OfficeMedium CLGSETP_SCH_NO_OPTIMUM Summer Design Day',...
+    'OfficeMedium CLGSETP_SCH_NO_OPTIMUM Winter Design Day','OfficeMedium CLGSETP_SCH_NO_OPTIMUM Default',...
+    'OfficeMedium CLGSETP_SCH_NO_OPTIMUM Default'};
 
 % skip=1;
 k=1;
 flag_end=0; %flag end =1 if the new schedule starts in first week  of the year.,
-date_det={'OfficeSmall CLGSETP_SCH_NO_OPTIMUM','Temperature'};
+date_det={'OfficeMedium CLGSETP_SCH_NO_OPTIMUM','Temperature'};
 Def_Tsetpoint='29.44';
 Tsetpoint='23.89';
 
@@ -35,7 +35,7 @@ for i=1:length(Week)
             m=m+1;
         end
         if ~strcmpi(Week(i).day(j).start,Week(i).day(j).end)& ~check
-            sch_name=sprintf('OfficeSmall CLGSETP_SCH_NO_OPTIMUM Wkdy Day %d',k);
+            sch_name=sprintf('OfficeMedium CLGSETP_SCH_NO_OPTIMUM Wkdy Day %d',k);
             sch_det={sch_name,'Temperature',' No','06:00',Def_Tsetpoint,startT,...
                 num2str(Tsetpoint),endT,num2str(T_low),...
                 '18:00',num2str(T_high),'24:00',Def_Tsetpoint};
@@ -51,7 +51,7 @@ for i=1:length(Week)
             
         end
         if check
-            sch_name={sprintf('  OfficeSmall CLGSETP_SCH_NO_OPTIMUM Wkdy Day')};
+            sch_name={sprintf('OfficeMedium CLGSETP_SCH_NO_OPTIMUM Wkdy Day')};
         end
         week_det=[week_det,sch_name];
         k=k+1;
@@ -65,7 +65,7 @@ for i=1:length(Week)
         week_chunk=[week_chunk;week];
     end
     if (Week(i).DayStart>=2) & (Week(i).MonthEnd>=1)&i==1
-        date_det=[date_det,'Schedule:Week:Daily {fe5d0827-d874-4791-bafe-4f1ed5e15184}'];
+        date_det=[date_det,'Schedule:Week:Daily {d11e795d-768e-4ab0-b525-f33f07b945cf}'];
         date_det=[date_det,'1','1',num2str(Week(i).MonthStart),num2str(Week(i).DayStart-1)];
     end
     
@@ -81,7 +81,7 @@ for i=1:length(Week)
     
 end
 if flag_end~=1
-    date_det=[date_det,'Schedule:Week:Daily {fe5d0827-d874-4791-bafe-4f1ed5e15184}'];
+    date_det=[date_det,'Schedule:Week:Daily {d11e795d-768e-4ab0-b525-f33f07b945cf}'];
     date_det=[date_det,num2str(Week(i).MonthStart),num2str(Week(i).DayEnd+1),'12','31'];
     
 end
@@ -90,7 +90,7 @@ date_chunk.fields=date_det;
 
 for i=1:length(data)
     if strfind(data(i).class,'Schedule:Year')
-        if (cellfun(@any,(strfind((data(i).fields(1)),'OfficeSmall CLGSETP_SCH_NO_OPTIMUM'))))
+        if (cellfun(@any,(strfind((data(i).fields(1)),'OfficeMedium CLGSETP_SCH_NO_OPTIMUM'))))
             aa=i;
             break
         end

@@ -1,11 +1,10 @@
-function writeIDF(data)
+function writeIDF(data,name)
 
 %Zahra Fallahi (May 2016) this function helps to write the idf data in the
 %format of IDF file.
 
 %Input: data is modified IDF information
 
-name='sms_off';
 
 %% Writing data in text format
 fileID=fopen(sprintf('%s.idf',name),'w');
